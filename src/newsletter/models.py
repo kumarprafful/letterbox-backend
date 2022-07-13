@@ -1,5 +1,5 @@
 from django.db.models.fields import related
-from common.models import TimeStampedModel
+from letterbox.models import BaseModel
 from django.db import models
 from letterbox.fields import IdentifierField
 from letterbox.utils.random import generate_random_id
@@ -9,7 +9,7 @@ def generate_name_nl():
     return generate_random_id('NL')
 
 
-class Genre(TimeStampedModel):
+class Genre(BaseModel):
     name = IdentifierField()
     title = models.CharField(max_length=255)
 
@@ -17,7 +17,7 @@ class Genre(TimeStampedModel):
         return self.title
 
 
-class Newsletter(TimeStampedModel):
+class Newsletter(BaseModel):
     DAILY = 'daily'
     WEEKLY = 'weekly'
     FORTNIGHTLY = 'fortnightly'
@@ -55,7 +55,7 @@ class Newsletter(TimeStampedModel):
         unique_together = ['company', 'title', ]
 
 
-class NewsletterCampaign(TimeStampedModel):
+class NewsletterCampaign(BaseModel):
     newsletter = models.OneToOneField(
         "newsletter.Newsletter", on_delete=models.CASCADE)
     letter = models.ForeignKey(

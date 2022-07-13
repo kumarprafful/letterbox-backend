@@ -1,4 +1,4 @@
-from common.models import TimeStampedModel
+from letterbox.models import BaseModel
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -32,7 +32,7 @@ def generate_name_cp():
     return generate_random_id('CP')
 
 
-class Company(TimeStampedModel):
+class Company(BaseModel):
     name = IdentifierField(default=generate_name_cp)
     users = models.ManyToManyField('users.User', through='users.CompanyUser')
     company_name = models.CharField(max_length=255, blank=True, null=True)
@@ -46,7 +46,7 @@ class Company(TimeStampedModel):
         return self.newsletters.exists()
 
 
-class CompanyUser(TimeStampedModel):
+class CompanyUser(BaseModel):
     ADMIN = 'admin'
 
     DESIGNATION_CHOICE = (

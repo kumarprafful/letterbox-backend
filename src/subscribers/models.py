@@ -1,10 +1,10 @@
-from common.models import TimeStampedModel
+from letterbox.models import BaseModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
 
-class Subscriber(TimeStampedModel):
+class Subscriber(BaseModel):
     company = models.ForeignKey(
         "users.Company", on_delete=models.SET_NULL, null=True)
     tags = models.ManyToManyField("common.Tag", blank=True)

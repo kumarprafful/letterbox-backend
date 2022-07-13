@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'psqlextra',
     'corsheaders',
 
-    'common',
     'users',
     'subscribers',
     'campaigns',

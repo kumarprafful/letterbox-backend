@@ -1,19 +1,20 @@
+import uuid
+
 from django.db import models
 
 from letterbox.fields import IdentifierField
 
 
-class TimeStampedModel(models.Model):
+class BaseModel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # created_by = models.ForeignKey(
-    # 'users.User', on_delete=models.SET_NULL, null=True, editable=False, auto_created=True, related_name='created_by_user')
 
     class Meta:
         abstract = True
 
 
-class Tag(TimeStampedModel):
+class Tag(BaseModel):
     name = IdentifierField()
     title = models.CharField(max_length=255)
 

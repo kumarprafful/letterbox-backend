@@ -1,4 +1,4 @@
-from common.models import TimeStampedModel
+from letterbox.models import BaseModel
 from django.db import models
 from letterbox.fields import IdentifierField
 from letterbox.utils.random import generate_random_id
@@ -8,7 +8,7 @@ def generate_name_campaign():
     return generate_random_id('CP')
 
 
-class Campaign(TimeStampedModel):
+class Campaign(BaseModel):
     CLASSIC = 'classic'
     HTML_CODE = 'code'
     TEXT = 'text'
@@ -37,7 +37,7 @@ class Campaign(TimeStampedModel):
         return CampaignContent.objects.filter(campaign=self).order_by('index')
 
 
-class CampaignContent(TimeStampedModel):
+class CampaignContent(BaseModel):
     TITLE = 'title'
     PARAGRAPH = 'paragraph'
     SINGLE_IMAGE = 'single_img'
@@ -94,7 +94,7 @@ class CampaignContent(TimeStampedModel):
         return ContentSocialLink.objects.filter(content=self)
 
 
-class ContentImage(TimeStampedModel):
+class ContentImage(BaseModel):
     content = models.ForeignKey(
         'campaigns.CampaignContent', on_delete=models.CASCADE)
     image = models.ImageField()
@@ -102,7 +102,7 @@ class ContentImage(TimeStampedModel):
     url = models.URLField(blank=True)
 
 
-class ContentStyle(TimeStampedModel):
+class ContentStyle(BaseModel):
     BACKGROUND = 'background'
     BORDER_WIDTH = 'border-width'
     BORDER_STYLE = 'border-style'
@@ -135,7 +135,7 @@ class ContentStyle(TimeStampedModel):
     style_value = models.CharField(max_length=255)
 
 
-class ContentSocialLink(TimeStampedModel):
+class ContentSocialLink(BaseModel):
     FACEBOOK = 'facebook'
     TWITTER = 'twitter'
     INSTAGRAM = 'instagram'
