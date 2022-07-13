@@ -85,7 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
             return
         self.first_name = parts[0] if parts[0] else None
         last_name = ' '.join(parts[1:])
-        self.last_name = last_name if last_name.strip() else None̵
+        self.last_name = last_name if last_name.strip() else None
 
     @property
     def company(self):
