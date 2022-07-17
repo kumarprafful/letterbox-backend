@@ -20,7 +20,7 @@ class GenreViewSet(viewsets.ModelViewSet):
 class NewsletterViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, ]
     pagination_class = CursorPagination
-    lookup_field = "name"
+    lookup_field = "identifier"
     model = Newsletter
     serializer_classes = {
         # "list": serializers.ListaGruppi,

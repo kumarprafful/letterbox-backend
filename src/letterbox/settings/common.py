@@ -142,35 +142,6 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# LOGGING = {
-#     'version': 1,
-#     'filters': {
-#         'require_debug_true': {
-#             '()': 'django.utils.log.RequireDebugTrue',
-#         }
-#     },
-#     'handlers': {
-#         'console': {
-#             'level': 'DEBUG',
-#             'filters': ['require_debug_true'],
-#             'class': 'logging.StreamHandler',
-#             'formatter': 'colored'
-#         }
-#     },
-#     'formatters': {
-#         'colored': {
-#             'format': '\u001b[33m{levelname} {message} \u001b[0m',
-#             'style': '{',
-#         },
-#     },
-#     'loggers': {
-#         'django.db.backends': {
-#             'level': 'DEBUG',
-#             'handlers': ['console'],
-#         }
-#     }
-# }
-
 CORS_ALLOW_ALL_ORIGINS = True
 
 AUTH_USER_MODEL = 'users.User'
@@ -186,13 +157,9 @@ REST_FRAMEWORK = {
     ]
 }
 
-# DJOSER = {
-#     'LOGIN_FIELD': 'email',
-#     'SERIALIZERS': {
-#         'current_user': 'users.serializers.TokenUserSerializer',
-#     }
-# }
-
 STATIC_ROOT = 'static'
 
 GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v2/userinfo/'
+AUTHENTICATION_BACKENDS = [
+    'users.auth_backends.lb_auth_backend.LBAuthBackend'
+]

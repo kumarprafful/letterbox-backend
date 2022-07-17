@@ -23,7 +23,7 @@ class LBAuthBackend(ModelBackend):
 
         elif user is None and password:
             user = self.get_authenticated_user_from_email(email=username)
-            if not user.check_password(password):
+            if not user or not user.check_password(password):
                 return None
         return user
 
