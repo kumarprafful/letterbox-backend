@@ -47,14 +47,14 @@ class CampaignContentSerializer(serializers.ModelSerializer):
 class CampaignCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Campaign
-        fields = ['name', 'company', 'title', 'subject',
+        fields = ['identifier', 'company', 'title', 'subject',
                   'preview_line', 'campaign_type', 'is_template', ]
 
 
 class CampaignSerializer(serializers.ModelSerializer):
     class Meta:
         model = Campaign
-        fields = ['name', 'title', 'subject', 'preview_line',
+        fields = ['identifier', 'title', 'subject', 'preview_line',
                   'campaign_type', 'created_at', 'updated_at', ]
 
 

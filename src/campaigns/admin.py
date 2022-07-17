@@ -6,8 +6,8 @@ from campaigns.models import (Campaign, CampaignContent, ContentImage, ContentSo
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
-    search_fields = ['title', 'name', ]
-    list_display = ['title', 'name', 'campaign_type',
+    search_fields = ['title', 'identifier', ]
+    list_display = ['title', 'identifier', 'campaign_type',
                     'is_template', 'created_at', 'updated_at', ]
 
 

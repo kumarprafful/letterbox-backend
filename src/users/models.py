@@ -42,8 +42,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin, BaseModel):
-    is_staff = models.BooleanField(_('staff_status', default=False))
-    is_active = models.BooleanField(_('active', default=True))
+    is_staff = models.BooleanField(_('staff_status'),  default=False)
+    is_active = models.BooleanField(_('active'), default=True)
 
     phone = PhoneNumberField(unique=True, null=True)
     email = models.EmailField(_('Email Address'), unique=True)
@@ -87,6 +87,8 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         last_name = ' '.join(parts[1:])
         self.last_name = last_name if last_name.strip() else None
 
+    name = property(get_full_name, set_full_name)
+
     @property
     def company(self):
         return Company.objects.get(users=self)
@@ -97,7 +99,7 @@ def generate_name_cp():
 
 
 class Company(BaseModel):
-    name = IdentifierField(default=generate_name_cp)
+    identifier = IdentifierField(default=generate_name_cp)
     users = models.ManyToManyField('users.User', through='users.CompanyUser')
     company_name = models.CharField(max_length=255, blank=True, null=True)
     website = models.URLField(blank=True, null=True)

@@ -10,7 +10,7 @@ def generate_name_nl():
 
 
 class Genre(BaseModel):
-    name = IdentifierField()
+    identifier = IdentifierField()
     title = models.CharField(max_length=255)
 
     def __str__(self):
@@ -40,7 +40,7 @@ class Newsletter(BaseModel):
 
     company = models.ForeignKey(
         "users.Company", related_name="newsletters", on_delete=models.CASCADE)
-    name = IdentifierField(default=generate_name_nl)
+    identifier = IdentifierField(default=generate_name_nl)
     title = models.CharField(max_length=255)
     genres = models.ManyToManyField("newsletter.Genre", blank=True)
     letters = models.ManyToManyField(

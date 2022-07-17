@@ -13,10 +13,3 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-
-class Tag(BaseModel):
-    name = IdentifierField()
-    title = models.CharField(max_length=255)
-
-    def __str__(self) -> str:
-        return self.title

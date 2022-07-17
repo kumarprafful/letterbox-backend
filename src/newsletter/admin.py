@@ -5,9 +5,9 @@ from newsletter.models import Genre, Newsletter, NewsletterCampaign
 
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'name': ('title',), }
+    prepopulated_fields = {'identifier': ('title',), }
     list_display = ['title', ]
-    fields = ['title', 'name']
+    fields = ['title', 'identifier']
 
 
 class NewsletterCampaignInlineAdmin(admin.TabularInline):

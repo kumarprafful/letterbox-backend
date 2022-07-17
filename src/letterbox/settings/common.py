@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'djoser',
+    # 'djoser',
     'rest_framework',
     'rest_framework.authtoken',
     'phonenumber_field',
@@ -186,12 +186,12 @@ REST_FRAMEWORK = {
     ]
 }
 
-DJOSER = {
-    'LOGIN_FIELD': 'email',
-    'SERIALIZERS': {
-        'current_user': 'users.serializers.TokenUserSerializer',
-    }
-}
+# DJOSER = {
+#     'LOGIN_FIELD': 'email',
+#     'SERIALIZERS': {
+#         'current_user': 'users.serializers.TokenUserSerializer',
+#     }
+# }
 
 STATIC_ROOT = 'static'
 

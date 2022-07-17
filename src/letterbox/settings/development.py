@@ -1,1 +1,1 @@
-from settings.common import *
+from letterbox.settings.common import *

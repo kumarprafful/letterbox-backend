@@ -20,7 +20,7 @@ class Campaign(BaseModel):
 
     company = models.ForeignKey(
         'users.Company', on_delete=models.SET_NULL, null=True)
-    name = IdentifierField(default=generate_name_campaign)
+    identifier = IdentifierField(default=generate_name_campaign)
     title = models.CharField(max_length=255)
     thumbnail = models.ImageField(blank=True, null=True)
     subject = models.CharField(max_length=150, null=True)

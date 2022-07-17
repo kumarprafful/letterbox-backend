@@ -7,7 +7,7 @@ from newsletter.models import Genre, Newsletter
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = ['name', 'title', ]
+        fields = ['identifier', 'title', ]
 
 
 class NewsletterSerializer(serializers.ModelSerializer):

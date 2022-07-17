@@ -9,7 +9,7 @@ from newsletter.serializers import GenreSerializer, NewsletterSerializer
 
 
 class GenreViewSet(viewsets.ModelViewSet):
-    lookup_field = "name"
+    lookup_field = "identifier"
     permission_classes = [IsAuthenticated]
     serializer_class = GenreSerializer
 

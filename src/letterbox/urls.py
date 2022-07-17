@@ -7,8 +7,8 @@ router = DefaultRouter()
 
 urlpatterns = router.urls + [
     path('admin/', admin.site.urls),
-    path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.authtoken')),
+    # path('auth/', include('djoser.urls')),
+    # path('auth/', include('djoser.urls.authtoken')),
     path('accounts/', include('users.urls')),
     path('campaigns/', include('campaigns.urls')),
     path('newsletter/', include('newsletter.urls')),
