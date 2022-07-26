@@ -1,7 +1,6 @@
-from django.db.models.fields import related
-from letterbox.models import BaseModel
 from django.db import models
 from letterbox.fields import IdentifierField
+from letterbox.models import BaseModel
 from letterbox.utils.random import generate_random_id
 
 
@@ -54,9 +53,16 @@ class Newsletter(BaseModel):
     class Meta:
         unique_together = ['company', 'title', ]
 
+    @property
+    def total_letters_count(self):
+        return self.letters.count()
+
 
 class NewsletterCampaign(BaseModel):
-    newsletter = models.OneToOneField(
+    newsletter = models.ForeignKey(
         "newsletter.Newsletter", on_delete=models.CASCADE)
-    letter = models.ForeignKey(
+    letter = models.OneToOneField(
         "campaigns.Campaign", on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f'{str(self.letter)} - {str(self.newsletter)}'

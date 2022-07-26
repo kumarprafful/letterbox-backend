@@ -45,7 +45,7 @@ class UserRegisterSerializer(serializers.Serializer):
         return user
 
 
-class TokenUserSerializer(serializers.ModelSerializer):
+class UserLiteSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', ]
+        fields = ['username', 'name', 'email', ]

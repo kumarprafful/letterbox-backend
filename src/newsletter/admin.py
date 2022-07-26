@@ -14,6 +14,7 @@ class NewsletterCampaignInlineAdmin(admin.TabularInline):
     model = NewsletterCampaign
     autocomplete_fields = ['letter', ]
     search_fields = ['letter', ]
+    extra = 0
 
 
 @admin.register(Newsletter)

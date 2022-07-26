@@ -30,5 +30,5 @@ class ContentSocialLinkAdmin(admin.TabularInline):
 class CampaignContentAdmin(admin.ModelAdmin):
     inlines = [ContentImageTabularAdmin,
                ContentStyleTabularAdmin, ContentSocialLinkAdmin]
-    search_fields = ['campaign__name', 'campaign__title', ]
-    # autocomplete_fields = ['campaign', ]
+    search_fields = ['campaign__identifier', 'campaign__title', ]
+    autocomplete_fields = ['campaign', ]

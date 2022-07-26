@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from campaigns.models import Campaign, CampaignContent, ContentImage, ContentSocialLink, ContentStyle
+from campaigns.models import (Campaign, CampaignContent, ContentImage,
+                              ContentSocialLink, ContentStyle)
 
 
 class ContentStyleSerializer(serializers.ModelSerializer):
@@ -28,7 +29,8 @@ class CampaignContentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CampaignContent
-        exclude = ['campaign', 'created_at', 'updated_at', ]
+        fields = ['content_type', 'id', 'images', 'index',
+                  'social_links', 'styles', 'text', 'url', ]
 
     def get_images(self, obj):
         if not obj.image_type:
@@ -39,12 +41,27 @@ class CampaignContentSerializer(serializers.ModelSerializer):
         return ContentStyleSerializer(obj.styles, many=True).data
 
     def get_social_links(self, obj):
-        if obj.content_type != CampaignContent.SOCIAL_LINKS:
+        if obj.content_type != CampaignContent.CONTENT_SOCIAL_LINKS:
             return None
         return ContentSocialLinkSerializer(obj.social_links, many=True).data if obj.social_links else None
 
 
+class CampaignContentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CampaignContent
+        fields = ['id', 'text', 'url']
+
+
+# class CampaignContentUpdateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CampaignContent
+#         fields = ['id', 'campaign', 'index', 'content_type', 'text', 'url']
+
+
 class CampaignCreateSerializer(serializers.ModelSerializer):
+    identifier = serializers.CharField(read_only=True)
+    # company = serializers.CharField(read_only=True)
+
     class Meta:
         model = Campaign
         fields = ['identifier', 'company', 'title', 'subject',
@@ -56,9 +73,3 @@ class CampaignSerializer(serializers.ModelSerializer):
         model = Campaign
         fields = ['identifier', 'title', 'subject', 'preview_line',
                   'campaign_type', 'created_at', 'updated_at', ]
-
-
-class CampaignContentCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CampaignContent
-        fields = ['id', 'campaign', 'index', 'content_type', 'text', 'url']

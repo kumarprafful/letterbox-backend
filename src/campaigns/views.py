@@ -2,7 +2,7 @@ from letterbox.pagination import CursorPagination
 from rest_framework import viewsets
 from rest_framework.decorators import (api_view, parser_classes,
                                        permission_classes)
-from rest_framework.generics import get_object_or_404
+from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -18,7 +18,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
     # serializer_class = CampaignSerializer
     permission_classes = [IsAuthenticated, ]
     pagination_class = CursorPagination
-    lookup_field = 'identifiers'
+    lookup_field = 'identifier'
     model = Campaign
     serializer_classes = {
         # 'list': serializers.ListaGruppi,
@@ -42,18 +42,17 @@ class CampaignViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         # change name to identifier
-        response = {'name': serializer.data['identifier']}
+        response = {'identifier': serializer.data['identifier']}
         return Response(response, status=201)
 
 
 class ContentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, ]
     # pagination_class = CursorPagination
-    lookup_field = 'identifier'
+    # lookup_field = 'identifier'
     model = CampaignContent
     serializer_classes = {
-        # 'list': serializers.ListaGruppi,
-        # 'retrieve': serializers.DettaglioGruppi,
+        'update': CampaignContentCreateSerializer,
         'create': CampaignContentCreateSerializer
     }
     default_serializer_class = CampaignContentSerializer
@@ -62,9 +61,17 @@ class ContentViewSet(viewsets.ModelViewSet):
         return self.serializer_classes.get(self.action, self.default_serializer_class)
 
     def get_queryset(self):
+        # figure out better way
         company = self.request.user.company
-        campaign = get_object_or_404(
-            Campaign, identifier=self.request.GET.get('campaign_name'), company=company)
+        try:
+            campaign_id = self.request.query_params['campaign_id']
+        except KeyError:
+            raise ValidationError('campaign_id is required')
+        try:
+            campaign = Campaign.objects.get(
+                identifier=campaign_id, company=company)
+        except Campaign.DoesNotExist:
+            raise ValidationError('Campaign not found')
         return campaign.contents
 
     def create(self, request, *args, **kwargs):

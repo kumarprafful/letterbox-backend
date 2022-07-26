@@ -6,7 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from users.serializers import UserRegisterSerializer
+from users.serializers import UserLiteSerializer, UserRegisterSerializer
 
 
 class AuthViewset(viewsets.GenericViewSet):
@@ -53,3 +53,11 @@ class AuthViewset(viewsets.GenericViewSet):
             request.user.auth_token.delete()
             logout(request)
         return Response(status=200)
+
+    @action(detail=False, methods=['get'], url_path='me', permission_classes=[IsAuthenticated])
+    def about_me(self, request):
+        user = request.user
+        serializer = UserLiteSerializer(user)
+        return Response(serializer.data, status=200)
+
+    

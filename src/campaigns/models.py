@@ -1,6 +1,6 @@
-from letterbox.models import BaseModel
 from django.db import models
 from letterbox.fields import IdentifierField
+from letterbox.models import BaseModel
 from letterbox.utils.random import generate_random_id
 
 
@@ -9,13 +9,14 @@ def generate_name_campaign():
 
 
 class Campaign(BaseModel):
-    CLASSIC = 'classic'
-    HTML_CODE = 'code'
-    TEXT = 'text'
+    CAMPAIGN_TYPE_CLASSIC = 'classic'
+    CAMPAIGN_TYPE_HTML_CODE = 'code'
+    CAMPAIGN_TYPE_TEXT = 'text'
+
     CAMPAIGN_TYPE_CHOICES = (
-        (CLASSIC, 'Classic'),
-        (HTML_CODE, 'HTML code'),
-        (TEXT, 'Rich Text'),
+        (CAMPAIGN_TYPE_CLASSIC, 'Classic'),
+        (CAMPAIGN_TYPE_HTML_CODE, 'HTML code'),
+        (CAMPAIGN_TYPE_TEXT, 'Rich Text'),
     )
 
     company = models.ForeignKey(
@@ -26,7 +27,7 @@ class Campaign(BaseModel):
     subject = models.CharField(max_length=150, null=True)
     preview_line = models.CharField(max_length=150, null=True)
     campaign_type = models.CharField(
-        max_length=20, choices=CAMPAIGN_TYPE_CHOICES, default=TEXT)
+        max_length=20, choices=CAMPAIGN_TYPE_CHOICES, default=CAMPAIGN_TYPE_TEXT)
     is_template = models.BooleanField(default=False)
 
     def __str__(self) -> str:
@@ -36,30 +37,43 @@ class Campaign(BaseModel):
     def contents(self):
         return CampaignContent.objects.filter(campaign=self).order_by('index')
 
+    @property
+    def newsletter(self):
+        newsletter_campaign = self.newslettercampaign
+        if newsletter_campaign is None:
+            return None
+        return newsletter_campaign.newsletter
+
+    def update_company(self, company):
+        self.company = company
+        self.save(update_fields=['company'])
+
 
 class CampaignContent(BaseModel):
-    TITLE = 'title'
-    PARAGRAPH = 'paragraph'
-    SINGLE_IMAGE = 'single_img'
-    MULTIPLE_IMAGE = 'multiple_img'
-    CONTENT_WITH_IMAGE = 'content_img'
-    NAVIGATION = 'navigation'
-    SPACE = 'space'
-    DIVIDER = 'divider'
-    SOCIAL_LINKS = 'social_links'
-    BUTTON = 'button'
+    CONTENT_TITLE = 'title'
+    CONTENT_PARAGRAPH = 'paragraph'
+    CONTENT_SINGLE_IMAGE = 'single_img'
+    CONTENT_MULTIPLE_IMAGE = 'multiple_img'
+    CONTENT_CONTENT_WITH_IMAGE = 'content_img'
+    CONTENT_NAVIGATION = 'navigation'
+    CONTENT_SPACE = 'space'
+    CONTENT_DIVIDER = 'divider'
+    CONTENT_SOCIAL_LINKS = 'social_links'
+    CONTENT_BUTTON = 'button'
+    CONTENT_HTML = 'html'
 
     CONTENT_TYPE_CHOICES = (
-        (TITLE, 'Title'),
-        (PARAGRAPH, 'Paragraph'),
-        (SINGLE_IMAGE, 'Single Image'),
-        (MULTIPLE_IMAGE, 'Multiple Image'),
-        (CONTENT_WITH_IMAGE, 'Content with Image'),
-        (NAVIGATION, 'Navigation'),
-        (SPACE, 'Space'),
-        (DIVIDER, 'Divider'),
-        (SOCIAL_LINKS, 'Social Links'),
-        (BUTTON, 'Button'),
+        (CONTENT_TITLE, 'Title'),
+        (CONTENT_PARAGRAPH, 'Paragraph'),
+        (CONTENT_SINGLE_IMAGE, 'Single Image'),
+        (CONTENT_MULTIPLE_IMAGE, 'Multiple Image'),
+        (CONTENT_CONTENT_WITH_IMAGE, 'Content with Image'),
+        (CONTENT_NAVIGATION, 'Navigation'),
+        (CONTENT_SPACE, 'Space'),
+        (CONTENT_DIVIDER, 'Divider'),
+        (CONTENT_SOCIAL_LINKS, 'Social Links'),
+        (CONTENT_BUTTON, 'Button'),
+        (CONTENT_HTML, 'HTML'),
     )
 
     index = models.IntegerField()
@@ -75,9 +89,9 @@ class CampaignContent(BaseModel):
 
     @property
     def image_type(self):
-        if self.content_type == self.SINGLE_IMAGE \
-                or self.content_type == self.MULTIPLE_IMAGE \
-                or self.content_type == self.CONTENT_WITH_IMAGE:
+        if self.content_type == self.CONTENT_SINGLE_IMAGE \
+                or self.content_type == self.CONTENT_MULTIPLE_IMAGE \
+                or self.content_type == self.CONTENT_CONTENT_WITH_IMAGE:
             return True
         return False
 

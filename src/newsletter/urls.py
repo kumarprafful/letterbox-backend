@@ -7,7 +7,8 @@ router = DefaultRouter()
 
 router.register('genres', views.GenreViewSet, 'genres')
 router.register('my-newsletter', views.NewsletterViewSet, 'newsletter')
-
+router.register('my-newsletter-campaign',
+                views.NewsletterCampaignViewset, 'newsletter-campaign')
 
 
 urlpatterns = router.urls + [
