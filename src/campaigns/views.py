@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from campaigns.models import Campaign, CampaignContent
-from campaigns.serializers import (CampaignContentCreateSerializer,
+from campaigns.serializers import (CampaignContentCreateSerializer, CampaignContentEditSerializer,
                                    CampaignContentSerializer,
                                    CampaignCreateSerializer,
                                    CampaignSerializer)
@@ -52,7 +52,7 @@ class ContentViewSet(viewsets.ModelViewSet):
     # lookup_field = 'identifier'
     model = CampaignContent
     serializer_classes = {
-        'update': CampaignContentCreateSerializer,
+        'update': CampaignContentEditSerializer,
         'create': CampaignContentCreateSerializer
     }
     default_serializer_class = CampaignContentSerializer

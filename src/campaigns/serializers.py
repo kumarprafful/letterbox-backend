@@ -47,9 +47,22 @@ class CampaignContentSerializer(serializers.ModelSerializer):
 
 
 class CampaignContentCreateSerializer(serializers.ModelSerializer):
+    index = serializers.IntegerField(required=False)
+
     class Meta:
         model = CampaignContent
-        fields = ['id', 'text', 'url']
+        fields = ['id', 'index', 'content_type', 'text']
+        # fields = ['id', 'campaign', 'index', 'content_type', 'text', 'url']
+
+class CampaignContentEditSerializer(serializers.ModelSerializer):
+    index = serializers.IntegerField(required=False)
+    content_type = serializers.CharField(read_only=True)
+    
+
+    class Meta:
+        model = CampaignContent
+        fields = ['id', 'index', 'content_type', 'text']
+
 
 
 # class CampaignContentUpdateSerializer(serializers.ModelSerializer):

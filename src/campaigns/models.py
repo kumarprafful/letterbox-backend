@@ -81,7 +81,7 @@ class CampaignContent(BaseModel):
         'campaigns.Campaign', on_delete=models.CASCADE)
     content_type = models.CharField(
         max_length=20, choices=CONTENT_TYPE_CHOICES)
-    text = models.TextField(blank=True, null=True)
+    text = models.TextField(default='')
     url = models.URLField(blank=True, null=True)
 
     def __str__(self) -> str:
