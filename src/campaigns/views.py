@@ -41,7 +41,6 @@ class CampaignViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        # change name to identifier
         response = {'identifier': serializer.data['identifier']}
         return Response(response, status=201)
 
