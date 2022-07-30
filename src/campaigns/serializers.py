@@ -81,7 +81,9 @@ class CampaignCreateSerializer(serializers.ModelSerializer):
 
 
 class CampaignSerializer(serializers.ModelSerializer):
+    newsletter_name = serializers.CharField(source='newsletter.title')
+
     class Meta:
         model = Campaign
-        fields = ['identifier', 'title', 'subject', 'preview_line',
+        fields = ['identifier', 'title', 'subject', 'preview_line', 'newsletter_name',
                   'campaign_type', 'created_at', 'updated_at', ]

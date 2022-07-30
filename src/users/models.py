@@ -1,5 +1,6 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
+from django.contrib.postgres.fields import CIEmailField
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -20,7 +21,7 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save()
         return user
-    
+
     def create_user(self, email, password, *args, **kwargs̵):
         kwargs̵.setdefault('is_staff', False)
         kwargs̵.setdefault('is_superuser', False)
@@ -39,14 +40,12 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, *args, **kwargs)
 
 
-
-
 class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     is_staff = models.BooleanField(_('staff_status'),  default=False)
     is_active = models.BooleanField(_('active'), default=True)
 
     phone = PhoneNumberField(unique=True, null=True)
-    email = models.EmailField(_('Email Address'), unique=True)
+    email = CIEmailField(_('Email Address'), unique=True)
     username = models.CharField(max_length=100, unique=True, blank=True)
 
     first_name = models.CharField(max_length=255, blank=True, null=True)
@@ -78,7 +77,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         if self.last_name:
             full_name += self.last_name
         return full_name.strip() or None
-    
+
     def set_full_name(self, name):
         parts = name.split(' ')
         if len(parts) < 1:
@@ -105,7 +104,7 @@ class Company(BaseModel):
     website = models.URLField(blank=True, null=True)
 
     def __str__(self) -> str:
-        return self.identifier
+        return f'{self.identifier} - {self.company_name}'
 
     @property
     def has_newsletter(self):

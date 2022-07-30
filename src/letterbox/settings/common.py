@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'letterbox.middlewares.TimeZoneMiddleware',
 ]
 
 ROOT_URLCONF = 'letterbox.urls'
@@ -130,6 +131,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+DEFAULT_TIMEZONE = 'Asia/Kolkata'
 
 
 # Static files (CSS, JavaScript, Images)

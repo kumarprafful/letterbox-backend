@@ -1,4 +1,4 @@
-from letterbox.pagination import CursorPagination
+from letterbox.pagination import LBPagination
 from rest_framework import viewsets
 from rest_framework.decorators import (api_view, parser_classes,
                                        permission_classes)
@@ -17,7 +17,7 @@ from campaigns.serializers import (CampaignContentCreateSerializer, CampaignCont
 class CampaignViewSet(viewsets.ModelViewSet):
     # serializer_class = CampaignSerializer
     permission_classes = [IsAuthenticated, ]
-    pagination_class = CursorPagination
+    pagination_class = LBPagination
     lookup_field = 'identifier'
     model = Campaign
     serializer_classes = {
@@ -31,8 +31,10 @@ class CampaignViewSet(viewsets.ModelViewSet):
         return self.serializer_classes.get(self.action, self.default_serializer_class)
 
     def get_queryset(self):
+        # only return campaigns which are part of a newsletter
         company = self.request.user.company
-        campaigns = Campaign.objects.filter(company=company)
+        campaigns = Campaign.objects.filter(
+            company=company, newslettercampaign__isnull=False)
         return campaigns
 
     def create(self, request, *args, **kwargs):
@@ -47,7 +49,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
 
 class ContentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, ]
-    # pagination_class = CursorPagination
+    # pagination_class = LBPagination
     # lookup_field = 'identifier'
     model = CampaignContent
     serializer_classes = {

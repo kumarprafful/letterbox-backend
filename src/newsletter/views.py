@@ -1,6 +1,6 @@
 
 from campaigns.serializers import CampaignCreateSerializer
-from letterbox.pagination import CursorPagination
+from letterbox.pagination import LBPagination
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -23,7 +23,7 @@ class GenreViewSet(viewsets.ModelViewSet):
 
 class NewsletterViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, ]
-    pagination_class = CursorPagination
+    pagination_class = LBPagination
     lookup_field = "identifier"
     serializer_classes = {
         # "list": serializers.ListaGruppi,
@@ -53,7 +53,7 @@ class NewsletterViewSet(viewsets.ModelViewSet):
 
 class NewsletterCampaignViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, ]
-    pagination_class = CursorPagination
+    pagination_class = LBPagination
     lookup_field = 'id'
 
     serializer_classes = {

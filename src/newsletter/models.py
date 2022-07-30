@@ -1,4 +1,5 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 from letterbox.fields import IdentifierField
 from letterbox.models import BaseModel
 from letterbox.utils.random import generate_random_id
@@ -14,6 +15,11 @@ class Genre(BaseModel):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if self.identifier is None:
+            self.identifier = slugify(self.title)
+        super(Genre, self).save(*args, **kwargs)
 
 
 class Newsletter(BaseModel):
@@ -44,6 +50,8 @@ class Newsletter(BaseModel):
     genres = models.ManyToManyField("newsletter.Genre", blank=True)
     letters = models.ManyToManyField(
         "campaigns.Campaign", through="newsletter.NewsletterCampaign", blank=True)
+    subscribers = models.ManyToManyField(
+        'subscribers.Subscriber', through='newsletter.NewsletterSubscriber', blank=True)
     frequency = models.CharField(
         max_length=50, choices=FREQUENCY_CHOICES, default=OTHER)
 
@@ -57,6 +65,10 @@ class Newsletter(BaseModel):
     def total_letters_count(self):
         return self.letters.count()
 
+    @property
+    def total_subscribers_count(self):
+        return self.subscribers.count()
+
 
 class NewsletterCampaign(BaseModel):
     newsletter = models.ForeignKey(
@@ -66,3 +78,13 @@ class NewsletterCampaign(BaseModel):
 
     def __str__(self) -> str:
         return f'{str(self.letter)} - {str(self.newsletter)}'
+
+
+class NewsletterSubscriber(BaseModel):
+    newsletter = models.ForeignKey(
+        'newsletter.Newsletter', on_delete=models.CASCADE)
+    subscriber = models.OneToOneField(
+        'subscribers.Subscriber', on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f'{str(self.subscriber)}- {str(self.newsletter)}'

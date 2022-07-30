@@ -12,11 +12,11 @@ class GenreSerializer(serializers.ModelSerializer):
 
 class NewsletterSerializer(serializers.ModelSerializer):
     letters = serializers.SerializerMethodField()
-    total_letters_count = serializers.IntegerField()
 
     class Meta:
         model = Newsletter
-        fields = '__all__'
+        fields = ['company', 'identifier', 'title', 'letters', 'genres',
+                  'total_letters_count', 'total_subscribers_count', 'updated_at', 'created_at', ]
 
     def get_letters(self, obj):
         letters = obj.letters.order_by('updated_at')
