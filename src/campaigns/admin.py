@@ -7,7 +7,7 @@ from campaigns.models import (Campaign, CampaignContent, ContentImage, ContentSo
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
     search_fields = ['title', 'identifier', ]
-    list_display = ['title', 'identifier', 'campaign_type',
+    list_display = ['title', 'campaign_type',
                     'is_template', 'created_at', 'updated_at', ]
 
 
@@ -32,3 +32,4 @@ class CampaignContentAdmin(admin.ModelAdmin):
                ContentStyleTabularAdmin, ContentSocialLinkAdmin]
     search_fields = ['campaign__identifier', 'campaign__title', ]
     autocomplete_fields = ['campaign', ]
+    list_display = ['campaign', 'content_type', 'index', ]
